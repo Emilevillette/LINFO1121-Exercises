@@ -2,7 +2,6 @@ package fundamentals;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * Author Pierre Schaus
@@ -40,7 +39,6 @@ public class CircularLinkedList<Item> implements Iterable<Item> {
     public CircularLinkedList() {
         // TODO initialize instance variables
         this.n = 0;
-        this.last = null;
     }
 
     public boolean isEmpty() {
@@ -52,7 +50,7 @@ public class CircularLinkedList<Item> implements Iterable<Item> {
     }
 
     private long nOp() {
-        return nOp;
+        return this.nOp;
     }
 
 
@@ -62,12 +60,12 @@ public class CircularLinkedList<Item> implements Iterable<Item> {
      * @param item the item to append
      */
     public void enqueue(Item item) {
+        this.n++;
+        this.nOp++;
         if (this.isEmpty()) {
             this.last = new Node();
             this.last.item = item;
             this.last.next = this.last;
-            this.n++;
-            this.nOp++;
             return;
         }
         Node temp = new Node();
@@ -75,8 +73,6 @@ public class CircularLinkedList<Item> implements Iterable<Item> {
         temp.next = this.last.next;
         this.last.next = temp;
         this.last = temp;
-        this.n++;
-        this.nOp++;
     }
 
     /**
@@ -86,17 +82,16 @@ public class CircularLinkedList<Item> implements Iterable<Item> {
      */
     public Item remove(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index > this.size() - 1) {
-            throw new IndexOutOfBoundsException("invalid size");
+            throw new IndexOutOfBoundsException("illegal index");
         }
-        Node current;
-        current = this.last.next;
+        this.n--;
+        this.nOp++;
+        Node current = this.last.next;
         for (int i = 0; i < index - 1; i++) {
             current = current.next;
         }
         Item temp = current.next.item;
         current.next = current.next.next;
-        this.nOp++;
-        this.n--;
         return temp;
     }
 
@@ -126,8 +121,9 @@ public class CircularLinkedList<Item> implements Iterable<Item> {
         long initnOp;
         CircularLinkedList<Item> cll;
         int pos;
+
         private ListIterator(CircularLinkedList<Item> list) {
-            if (list.last != null) {
+            if (!list.isEmpty()) {
                 current = list.last.next; //position in the beginning
             }
             this.initnOp = list.nOp();
