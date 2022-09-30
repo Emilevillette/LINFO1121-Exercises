@@ -66,24 +66,34 @@ class LinkedStack<E> implements Stack<E> {
     @Override
     public boolean empty() {
         // TODO Implement empty method
-        return false;
+        return this.size == 0;
     }
 
     @Override
     public E peek() throws EmptyStackException {
+        if (this.empty()) throw new EmptyStackException();
         // TODO Implement peek method
-        return null;
+        return this.top.item;
     }
 
     @Override
     public E pop() throws EmptyStackException {
+        if (this.empty()) throw new EmptyStackException();
         // TODO Implement pop method
+        this.size--;
         return null;
     }
 
     @Override
     public void push(E item) {
         // TODO Implement push method
+        this.size++;
+        if (this.top == null) {
+            this.top = new Node<>(item, null);
+            return;
+        }
+        this.top.next = new Node<>(item, null);
+        this.top = this.top.next;
     }
 }
 
@@ -113,14 +123,14 @@ class ArrayStack<E> implements Stack<E> {
 
     @Override
     public E peek() throws EmptyStackException {
-        if (empty()) throw new EmptyStackException();
+        if (this.empty()) throw new EmptyStackException();
         // TODO Implement peek method
         return this.array[this.size - 1];
     }
 
     @Override
     public E pop() throws EmptyStackException {
-        if (empty()) throw new EmptyStackException();
+        if (this.empty()) throw new EmptyStackException();
         // TODO Implement pop method
         this.size--;
         E temp = this.array[this.size];
