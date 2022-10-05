@@ -95,12 +95,14 @@ public abstract class FList<A> implements Iterable<A> {
 
             public boolean hasNext() {
                 // TODO
-                return false;
+                return current.tail() != null;
             }
 
             public A next() {
                 // TODO
-                return null;
+                A temp = current.head();
+                current = current.tail();
+                return temp;
             }
 
             public void remove() {
@@ -129,21 +131,24 @@ public abstract class FList<A> implements Iterable<A> {
     private static final class Cons<A> extends FList<A> {
 
         // TODO add instance variables
-
+        A head;
+        FList<A> tail;
 
         Cons(A a, FList<A> tail) {
+            this.head = a;
+            this.tail = tail;
         }
 
         @Override
         public A head() {
             // TODO
-            return null;
+            return this.head;
         }
 
         @Override
         public FList<A> tail() {
             // TODO
-            return null;
+            return this.tail;
         }
     }
 

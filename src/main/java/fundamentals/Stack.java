@@ -56,10 +56,12 @@ class LinkedStack<E> implements Stack<E> {
     private class Node<E> {
         private E item;
         private Node<E> next;
+        private Node<E> previous;
 
-        public Node(E element, Node<E> next) {
+        public Node(E element, Node<E> next, Node<E> previous) {
             this.item = element;
             this.next = next;
+            this.previous = previous;
         }
     }
 
@@ -81,7 +83,12 @@ class LinkedStack<E> implements Stack<E> {
         if (this.empty()) throw new EmptyStackException();
         // TODO Implement pop method
         this.size--;
-        return null;
+        E temp = this.top.item;
+        this.top = this.top.previous;
+        if (this.top != null) {
+            this.top.next = null;
+        }
+        return temp;
     }
 
     @Override
@@ -89,10 +96,10 @@ class LinkedStack<E> implements Stack<E> {
         // TODO Implement push method
         this.size++;
         if (this.top == null) {
-            this.top = new Node<>(item, null);
+            this.top = new Node<>(item, null, null);
             return;
         }
-        this.top.next = new Node<>(item, null);
+        this.top.next = new Node<>(item, null, this.top);
         this.top = this.top.next;
     }
 }
