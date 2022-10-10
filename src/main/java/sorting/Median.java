@@ -1,5 +1,9 @@
 package sorting;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.Random;
 /**
  * Author Pierre Schaus
  * <p>
@@ -106,7 +110,67 @@ public class Median {
      */
     public static int median(Vector vec, int lo, int hi) {
         // TODO
-        return -1;
+        //System.out.println(vec.nOp());
+        mergesort(vec, lo, hi);
+        //System.out.println(vec.nOp());
+
+        for (int i = 0; i < vec.size(); i++) {
+            System.out.println(vec.get(i));
+        }
+        return vec.get((hi + lo) /2);
     }
 
+    static void mergesort(Vector vec, int lo, int hi) {
+        if (vec.get(lo) < vec.get(hi)) {
+            int mid = lo + (hi - 1) / 2;
+            mergesort(vec, lo, mid);
+            mergesort(vec, mid + 1, hi);
+
+            merge(vec, lo, mid, hi);
+        }
+    }
+
+    static void merge(Vector vec, int lo, int mid, int hi) {
+        int start = mid + 1;
+
+        if (vec.get(mid) <= vec.get(start)) {
+            return;
+        }
+
+        while (lo <= mid && start <= hi) {
+
+            if (vec.get(lo) <= vec.get(start)) {
+                lo++;
+            } else {
+                int val = vec.get(start);
+                int pos = start;
+
+                while (pos != lo) {
+                    System.out.println(vec.get(pos));
+                    vec.set(pos, vec.get(pos - 1));
+                    System.out.println(vec.get(pos));
+                    pos--;
+                }
+                vec.set(lo, val);
+
+                lo++;
+                mid++;
+                start++;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Vector vec = new Vector(10);
+        for(int i= 0; i<10; i++) {
+            vec.set(i, 10-i);
+        }
+        for (int i = 0; i < vec.size(); i++) {
+            //System.out.println(vec.get(i));
+        }
+        mergesort(vec, 0,9);
+        for (int i = 0; i < vec.size(); i++) {
+            //System.out.println(vec.get(i));
+        }
+    }
 }
