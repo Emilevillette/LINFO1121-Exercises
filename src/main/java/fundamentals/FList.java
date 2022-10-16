@@ -75,14 +75,22 @@ public abstract class FList<A> implements Iterable<A> {
 
     // return a list on which each element has been applied function f
     public final <B> FList<B> map(Function<A, B> f) {
-        // TODO
-        return null;
+        if(isEmpty()) {
+            return nil();
+        }
+        return tail().map(f).cons(f.apply(this.head()));
     }
 
     // return a list on which only the elements that satisfies predicate are kept
     public final FList<A> filter(Predicate<A> f) {
         // TODO
-        return null;
+        if(isEmpty()) {
+            return nil();
+        }
+        if(f.test(this.head())) {
+            return tail().filter(f).cons(this.head());
+        }
+        return tail().filter(f);
     }
 
 
@@ -95,7 +103,7 @@ public abstract class FList<A> implements Iterable<A> {
 
             public boolean hasNext() {
                 // TODO
-                return current.tail() != null;
+                return current.isNotEmpty();
             }
 
             public A next() {
@@ -118,13 +126,13 @@ public abstract class FList<A> implements Iterable<A> {
         @Override
         public A head() {
             // TODO
-            return null;
+            throw new IllegalArgumentException();
         }
 
         @Override
         public FList<A> tail() {
             // TODO
-            return null;
+            throw new IllegalArgumentException();
         }
     }
 
