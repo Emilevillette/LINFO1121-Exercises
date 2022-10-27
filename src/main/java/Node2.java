@@ -17,6 +17,21 @@ public class Node2 extends Node {
     @Override
     public Node put(Integer k, Double v){
         //TODO Implement the method
+        if (k < this.key) {
+            if (this.left == null) {
+                this.left = new Node2(k, v, null, null);
+            } else {
+                this.left.put(k, v);
+            }
+        } else if(k > this.key) {
+            if(this.right == null) {
+                this.right = new Node2(k, v, null, null);
+            } else {
+                this.right.put(k,v);
+            }
+        } else {
+            throw new IllegalArgumentException("key already exists");
+        }
         return null;
     }
 

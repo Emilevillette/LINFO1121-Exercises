@@ -11,7 +11,36 @@ public class Tree23 {
 
     public void put(Integer key, Double value){
         //TODO Implement the method
+        if(this.root == null) {
+            this.root = new Node2(key,value,null,null);
+            return;
+        }
+        if (this.root.isLeaf()) {
+            if (this.root instanceof Node2) {
+                Node2 curr = (Node2) this.root;
+                if (key < curr.key) {
+                    curr.left.put(key, value);
+                } else {
+                    curr.right.put(key, value);
+                }
+            } else {
+                Node3 curr = (Node3) this.root;
+                if (key < curr.k1) {
+                    curr.left.put(key, value);
+                } else if (key > curr.k2) {
+                    curr.right.put(key, value);
+                } else {
+                    curr.middle.put(key, value);
+                }
+            }
+        } else {
+            if(this.root instanceof Node2) {
+                this.root = new Node3(this)
+            }
+        }
+
     }
+
 
     public Double search(Integer k){
         return Node.search(root, k);
