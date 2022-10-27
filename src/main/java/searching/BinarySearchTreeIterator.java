@@ -103,18 +103,36 @@ public class BinarySearchTreeIterator<Key extends Comparable<Key>> implements It
         public BSTIterator() {
             this.stack = new Stack<>();
             BSTNode<Key> current = root;
-
+            while(current!=null) {
+                this.stack.push(current);
+                current = current.getLeft();
+            }
+            this.size = size();
         }
         @Override
         public boolean hasNext() {
-            return false;
+            if(this.size != size()) throw new ConcurrentModificationException();
+            return !this.stack.isEmpty();
         }
 
         @Override
         public Key next() {
-            return null;
+            if (this.size != size()) throw new ConcurrentModificationException();
+            if (!this.hasNext()) throw new NoSuchElementException();
+            // INVARIANT:
+            // Node on top of the stack contains a reference
+            // to the node that should be returned next
+            BSTNode<Key> node = this.stack.pop();
+            Key key = node.getKey();
+            if (node.getRight() != null) {
+                node = node.getRight();
+                while (node != null) {
+                    this.stack.push(node);
+                    node = node.getLeft();
+                }
+            }
+            return key;
         }
-        // implement collection
     }
 
     class BSTNode<K extends Comparable<K>> {
