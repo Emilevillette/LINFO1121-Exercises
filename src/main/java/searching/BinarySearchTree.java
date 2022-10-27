@@ -34,7 +34,25 @@ public class BinarySearchTree {
      * @param value the value we want to ceil
      */
     public static Integer ceil(BSTNode<Integer> root, int value) {
-         return null;
+        return tailceil(root, value, null);
+    }
+
+    public static Integer tailceil(BSTNode<Integer> root, int value, Integer current) {
+        if(root == null) {
+            return current;
+        }
+        int val = root.getKey();
+        if(val == value) return val;
+        else if (val > value) {
+
+            if(current == null || val < current) {
+                return tailceil(root.getLeft(), value, val);
+            } else {
+                return tailceil(root.getLeft(), value, current);
+            }
+        } else {
+            return tailceil(root.getRight(), value, current);
+        }
     }
 
 
