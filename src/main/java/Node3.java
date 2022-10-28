@@ -48,27 +48,6 @@ public class Node3 extends Node {
     @Override
     public Node put(Integer k, Double v) {
         //TODO Implement the method
-        if(k < this.k1) {
-            if (this.left == null) {
-                this.left = new Node2(k,v,null, null);
-            } else {
-                this.left.put(k, v);
-            }
-        } else if(k > this.k2) {
-            if(this.right == null) {
-                this.right = new Node2(k, v, null, null);
-            } else {
-                this.right.put(k,v);
-            }
-        } else if (this.k1 < k && k < this.k2) {
-            if(this.middle == null) {
-                this.middle = new Node2(k, v, null, null);
-            } else {
-                this.middle.put(k,v);
-            }
-        } else {
-            throw new IllegalArgumentException("key already exists");
-        }
         return null;
     }
 
