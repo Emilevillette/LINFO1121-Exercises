@@ -1,18 +1,17 @@
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 
 /**
  * Unit test for simple App.
  */
-public class Tree23Test
-{
+public class Tree23Test {
     @Test
-    public void testSimple()
-    {
+    public void testSimple() {
 
-        Tree23 t = new Tree23();
+        Tree23 t = new Tree23(null);
         for (int i = 0; i < 10; i++) {
             t.put(i, (double) i);
         }
@@ -20,12 +19,12 @@ public class Tree23Test
             assertEquals((double) t.search(i), (double) i, 0.0001);
         }
 
-        assertEquals(t.search(11) , null);
+        assertEquals(t.search(11), null);
     }
 
     @Test
-    public void isBalanced(){
-        Tree23 t = new Tree23();
+    public void isBalanced() {
+        Tree23 t = new Tree23(null);
         for (int i = 0; i < 1000; i++) {
             t.put(i, (double) i);
         }
@@ -33,8 +32,8 @@ public class Tree23Test
     }
 
     @Test
-    public void isBst(){
-        Tree23 t = new Tree23();
+    public void isBst() {
+        Tree23 t = new Tree23(null);
         for (int i = 0; i < 1000; i++) {
             t.put(i, (double) i);
         }
