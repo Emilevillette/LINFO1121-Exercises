@@ -1,13 +1,16 @@
 package solution;
 
-public class Node2 extends Node{
+public class Node2 extends Node {
 
     Integer key;
     Double value;
     Node left, right;
 
-    Node2(Integer k, Double v, Node l, Node r){
-        key = k; value = v; left = l; right = r;
+    Node2(Integer k, Double v, Node l, Node r) {
+        key = k;
+        value = v;
+        left = l;
+        right = r;
     }
 
     public boolean isLeaf() {
@@ -15,23 +18,22 @@ public class Node2 extends Node{
     }
 
     @Override
-    public Node put(Integer k, Double v){
+    public Node put(Integer k, Double v) {
         if (isLeaf()) return new Node3(key, k, value, v, null, null, null);
-        if (k.compareTo(key) < 0){
+        if (k.compareTo(key) < 0) {
             Node n = left.put(k, v);
             Node2 temp = Tree23.carry;
             if (temp != null) return new Node3(key, temp.key, value, temp.value, Tree23.temp, Tree23.temp2, right);
             else left = n;
 
-        }else{
+        } else {
             Node n = right.put(k, v);
             Node2 temp = Tree23.carry;
-            if (temp != null){
+            if (temp != null) {
                 Node ret = new Node3(key, temp.key, value, temp.value, left, Tree23.temp, Tree23.temp2);
                 Tree23.carry = null;
                 return ret;
-            }
-            else right = n;
+            } else right = n;
         }
         return this;
     }
