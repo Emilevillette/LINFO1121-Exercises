@@ -12,7 +12,7 @@ public class Tree23 {
     public void put(Integer key, Double value){
         //TODO Implement the method
         carry = null;
-        this.root = Node.put(this.root, key, value);
+        root = Node.put(root, key, value);
     }
 
     public Double search(Integer k){

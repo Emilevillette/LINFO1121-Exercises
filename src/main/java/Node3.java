@@ -2,8 +2,8 @@
 
 public class Node3 extends Node {
 
-    Integer k1, k2;  // keys are in order => k1 < k2
-    Double v1, v2;   // corresponding values to keys
+    Integer k1, k2;  // k1 < k2
+    Double v1, v2;
     Node left, middle, right;
 
     Node3(Integer k1, Integer k2, Double v1, Double v2, Node left, Node middle, Node right) {
@@ -17,7 +17,7 @@ public class Node3 extends Node {
     }
 
     /**
-     * @param k the key to compare
+     * @param k : a key to compare
      * @return 0 if k1 < k < k2
      * -1 if k < k1
      * 1 if k > k2
@@ -64,30 +64,35 @@ public class Node3 extends Node {
             return null;
         }
         if (this.compare(k) < 0) {
+            Node check_rec = this.left.put(k, v);
             if (Tree23.carry != null) {
                 Tree23.temp = new Node2(Tree23.carry.key, Tree23.carry.value, Tree23.temp, Tree23.temp2);
                 Tree23.temp2 = new Node2(this.k2, this.v2, this.middle, this.right);
                 Tree23.carry = new Node2(this.k1, this.v1, null, null);
                 return null;
+            } else {
+                this.left = check_rec;
             }
-            this.left = this.left.put(k, v);
         } else if (this.compare(k) > 0) {
+            Node check_rec = this.right.put(k, v);
             if (Tree23.carry != null) {
-                Tree23.temp = new Node2(this.k1, this.v1, this.left, this.middle);
                 Tree23.temp2 = new Node2(Tree23.carry.key, Tree23.carry.value, Tree23.temp, Tree23.temp2);
+                Tree23.temp = new Node2(this.k1, this.v1, this.left, this.middle);
                 Tree23.carry = new Node2(this.k2, this.v2, null, null);
                 return null;
+            } else {
+                this.right = check_rec;
             }
-            this.right = this.right.put(k, v);
         } else {
+            Node check_rec = this.middle.put(k, v);
             if (Tree23.carry != null) {
                 Tree23.temp = new Node2(this.k1, this.v1, Tree23.temp, Tree23.temp2);
                 Tree23.temp2 = new Node2(this.k2, this.v2, this.middle, this.right);
                 Tree23.carry = new Node2(Tree23.carry.key, Tree23.carry.value, null, null);
-
                 return null;
+            } else {
+                this.middle = check_rec;
             }
-            this.middle = this.middle.put(k, v);
         }
         return this;
     }

@@ -21,21 +21,26 @@ public class Node2 extends Node {
     public Node put(Integer k, Double v) {
         //TODO Implement the method
         if (this.isLeaf()) return new Node3(this.key, k, this.value, v, null, null, null);
-        Node2 tree_carry = Tree23.carry;
-        if (k < this.key) {
+        if (k.compareTo(key) < 0) {
+            Node check_rec = this.left.put(k,v);
+            Node2 tree_carry = Tree23.carry;
             if (tree_carry != null) {
                 Node3 retval = new Node3(this.key, tree_carry.key, this.value, tree_carry.value, Tree23.temp, Tree23.temp2, this.right);
                 Tree23.carry = null;
                 return retval;
+            } else {
+                this.left = check_rec;
             }
-            this.left = this.left.put(k, v);
         } else {
+            Node check_rec = this.right.put(k,v);
+            Node2 tree_carry = Tree23.carry;
             if (tree_carry != null) {
                 Node3 retval = new Node3(this.key, tree_carry.key, this.value, tree_carry.value, this.left, Tree23.temp, Tree23.temp2);
                 Tree23.carry = null;
                 return retval;
+            } else {
+                this.right = check_rec;
             }
-            this.right = this.right.put(k, v);
         }
         return this;
     }
