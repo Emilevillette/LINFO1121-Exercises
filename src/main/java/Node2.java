@@ -6,8 +6,11 @@ public class Node2 extends Node {
     Double value;
     Node left, right;
 
-    Node2(Integer k, Double v, Node l, Node r){
-        key = k; value = v; left = l; right = r;
+    Node2(Integer k, Double v, Node l, Node r) {
+        key = k;
+        value = v;
+        left = l;
+        right = r;
     }
 
     public boolean isLeaf() {
@@ -15,9 +18,26 @@ public class Node2 extends Node {
     }
 
     @Override
-    public Node put(Integer k, Double v){
+    public Node put(Integer k, Double v) {
         //TODO Implement the method
-        return null;
+        if (this.isLeaf()) return new Node3(this.key, k, this.value, v, null, null, null);
+        Node2 tree_carry = Tree23.carry;
+        if (k < this.key) {
+            if (tree_carry != null) {
+                Node3 retval = new Node3(this.key, tree_carry.key, this.value, tree_carry.value, Tree23.temp, Tree23.temp2, this.right);
+                Tree23.carry = null;
+                return retval;
+            }
+            this.left = this.left.put(k, v);
+        } else {
+            if (tree_carry != null) {
+                Node3 retval = new Node3(this.key, tree_carry.key, this.value, tree_carry.value, this.left, Tree23.temp, Tree23.temp2);
+                Tree23.carry = null;
+                return retval;
+            }
+            this.right = this.right.put(k, v);
+        }
+        return this;
     }
 
     @Override
