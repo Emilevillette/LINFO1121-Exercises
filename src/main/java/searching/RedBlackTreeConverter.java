@@ -41,32 +41,32 @@ public class RedBlackTreeConverter {
      * @return a RBNode which is the root of the equivalent RedBlackTRee
      */
 
-    public static<Key extends Comparable<Key>> RBNode<Key> convert(TwoThreeNode<Key> twoThreeNode) {
-        return convert(twoThreeNode, get_size(twoThreeNode));
-    }
-
-    public static <Key extends Comparable<Key>> RBNode<Key> convert(TwoThreeNode<Key> twoThreeNode, int size) {
+    public static <Key extends Comparable<Key>> RBNode<Key> convert(TwoThreeNode<Key> twoThreeNode) {
         if (twoThreeNode == null) return null;
         if (twoThreeNode.is2node()) {
-            RBNode<Key> retval = new RBNode<Key>(twoThreeNode.leftKey, twoThreeNode.leftValue, Color.Black, size);
-            retval.leftChild = convert(twoThreeNode.leftChild, size);
-            retval.rightChild = convert(twoThreeNode.centerChild, size);
+            RBNode<Key> retval = new RBNode<Key>(twoThreeNode.leftKey, twoThreeNode.leftValue, Color.Black, 1);
+            retval.leftChild = convert(twoThreeNode.leftChild);
+            retval.rightChild = convert(twoThreeNode.centerChild);
+            retval.size += sizeEvenIfNull(retval.leftChild) + sizeEvenIfNull(retval.rightChild);
             return retval;
         } else {
-            RBNode<Key> retvalBlack = new RBNode<Key>(twoThreeNode.rightKey, twoThreeNode.rightValue, Color.Black, size);
-            retvalBlack.rightChild = convert(twoThreeNode.rightChild, size);
-            RBNode<Key> retvalRed = new RBNode<Key>(twoThreeNode.leftKey, twoThreeNode.leftValue, Color.Black, size);
-            retvalRed.leftChild = convert(twoThreeNode.leftChild, size);
-            retvalRed.rightChild = convert(twoThreeNode.centerChild, size);
+            RBNode<Key> retvalBlack = new RBNode<Key>(twoThreeNode.rightKey, twoThreeNode.rightValue, Color.Black, 1);
+            retvalBlack.rightChild = convert(twoThreeNode.rightChild);
+            RBNode<Key> retvalRed = new RBNode<Key>(twoThreeNode.leftKey, twoThreeNode.leftValue, Color.Red, 1);
+            retvalRed.leftChild = convert(twoThreeNode.leftChild);
+            retvalRed.rightChild = convert(twoThreeNode.centerChild);
             retvalBlack.leftChild = retvalRed;
+
+            retvalRed.size += sizeEvenIfNull(retvalRed.leftChild) + sizeEvenIfNull(retvalRed.rightChild);
+            retvalBlack.size += sizeEvenIfNull(retvalBlack.leftChild) + sizeEvenIfNull(retvalBlack.rightChild);
             return retvalBlack;
         }
     }
 
-    public static<Key extends Comparable<Key>> int get_size(TwoThreeNode<Key> twoThreeNode) {
+    public static <Key extends Comparable<Key>> int get_size(TwoThreeNode<Key> twoThreeNode) {
         TwoThreeNode<Key> current = twoThreeNode;
         int size = 0;
-        while (current!= null) {
+        while (current != null) {
             size++;
             current = current.leftChild;
         }
