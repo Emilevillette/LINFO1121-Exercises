@@ -100,6 +100,8 @@ public class LinearProbingHashST<Key, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
+        if(key == null) throw new IllegalArgumentException("Key cannot be null");
+
     }
 
     /**
