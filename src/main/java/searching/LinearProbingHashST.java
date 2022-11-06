@@ -1,7 +1,7 @@
 package searching;
 
 /**
- * With the given partiel implementation of LinearProbingHashST, we ask you to
+ * With the given partial implementation of LinearProbingHashST, we ask you to
  * implement the resize, get and put methods
  * You are not allowed to use already existing classes and methods from Java
  */
@@ -87,6 +87,15 @@ public class LinearProbingHashST<Key, Value> {
      * @param capacity the capacity
      */
     protected void resize(int capacity) {
+        LinearProbingHashST<Key, Value> t = new LinearProbingHashST<Key, Value>(capacity);
+        for (int i = 0; i < m; i++) {
+            if(keys[i] != null) {
+                t.put(keys[i], vals[i]);
+            }
+        }
+        keys = t.keys;
+        vals = t.vals;
+        m = t.m;
     }
 
     /**
@@ -100,7 +109,18 @@ public class LinearProbingHashST<Key, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
-        if(key == null) throw new IllegalArgumentException("Key cannot be null");
+        if (key == null) throw new IllegalArgumentException("Key cannot be null");
+        if (n >= m / 2) resize(2 * m);
+        int i;
+        for (i = hash(key); keys[i] != null; i = (i + 1) % m) {
+            if (keys[i].equals(key)) {
+                vals[i] = val;
+                return;
+            }
+        }
+        keys[i] = key;
+        vals[i] = val;
+        n++;
 
     }
 
@@ -115,8 +135,12 @@ public class LinearProbingHashST<Key, Value> {
      */
     public Value get(Key key) {
         if (key == null) throw new IllegalArgumentException("Key cannot be null");
+        for (int i = hash(key); keys[i] != null; i = (i + 1) % m) {
+            if (keys[i].equals(key)) {
+                return vals[i];
+            }
+        }
         return null;
-
     }
 
     /**
