@@ -4,24 +4,23 @@ import java.util.Hashtable;
 
 /**
  * Author Pierre Schaus
- *
+ * <p>
  * We are interested in the Rabin-Karp algorithm.
  * We would like to modify it a bit to determine if a word among a list (all words are of the same length) is present in the text.
  * To do this, you need to modify the Rabin-Karp algorithm which is shown below (page 777 of the book).
  * More precisely, you are asked to modify this class so that it has a constructor of the form:
  * public RabinKarp(String[] pat)
- *
+ * <p>
  * Moreover the search function must return the index of the beginning of the first word (among the pat array) found in the text or
  * the size of the text if no word appears in the text.
- *
+ * <p>
  * Example: If txt = "Here find interesting exercise for Rabin Karp" and pat={"have", "find", "Karp"}
  * the search function must return 5 because the word "find" present in the text and in the list starts at index 5.
- *
  */
 public class RabinKarp {
 
 
-    private String pat; // pattern (only needed for Las Vegas)
+    private Hashtable<Long, String> hTable = new Hashtable<>();
 
     private long patHash; // pattern hash value
 
@@ -33,19 +32,24 @@ public class RabinKarp {
 
     public RabinKarp(String[] pat) {
 
-
-        this.pat = pat; // save pattern (only needed for Las Vegas)
-        this.M = pat.length();
+        this.M = pat[0].length();
         Q = 4463;
         RM = 1;
 
-        for (int i = 1; i <= M - 1; i++) // Compute R^(M-1) % Q for use
+        for (int i = 1; i <= M - 1; i++) { // Compute R^(M-1) % Q for use
             RM = (R * RM) % Q; // in removing leading digit.
+        }
 
+        for (int i = 0; i < pat.length; i++) {
+            patHash = hash(pat[i], M);
+            hTable.put(patHash, pat[i]);
+        }
     }
 
-    public boolean check(int i) // Monte Carlo (See text.)
-    { return true; } // For Las Vegas, check pat vs txt(i..i-M+1).
+    public boolean check(int i, String pattern, String txt) // Monte Carlo (See text.)
+    {
+        return (pattern.equals(txt.substring(i, M + i)));
+    } // For Las Vegas, check pat vs txt(i..i-M+1).
 
 
     private long hash(String key, int M) { // Compute hash for key[0..M-1].
@@ -60,12 +64,14 @@ public class RabinKarp {
         int N = txt.length();
         long txtHash = hash(txt, M);
 
-        if (patHash == txtHash) return 0; // Match at beginning.
+        if (hTable.containsKey(txtHash) && (check(0, hTable.get(txtHash), txt))) return 0; // Match at beginning.
         for (int i = M; i < N; i++) { // Remove leading digit, add trailing digit, check for match.
             txtHash = (txtHash + Q - RM * txt.charAt(i - M) % Q) % Q;
             txtHash = (txtHash * R + txt.charAt(i)) % Q;
-            if (patHash == txtHash)
-                if (check(i - M + 1)) return i - M + 1; // match
+            if (hTable.containsKey(txtHash))
+                if (check(i - M + 1, hTable.get(txtHash), txt)) {
+                    return i - M + 1; // match
+                }
         }
         return N; // no match found
     }
